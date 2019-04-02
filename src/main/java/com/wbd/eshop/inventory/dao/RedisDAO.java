@@ -10,4 +10,6 @@ public interface RedisDAO {
 	public void set(String key,String value);
 	
 	public String get(String key);
+	
+	public void delete(String key);
 }
