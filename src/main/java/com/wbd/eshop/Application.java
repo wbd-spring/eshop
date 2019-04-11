@@ -11,23 +11,21 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.ServletListenerRegistrationBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.wbd.eshop.inventory.listener.InitThreadAndListBlockingQueueListener;
-
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
-
 @SpringBootApplication // spring boot 启动程序
 @EnableAutoConfiguration // 开启自动注入
 @ComponentScan // 开启自动扫描包
 @MapperScan("com.wbd.eshop.inventory.mapper") // 扫描mybatis
+@ServletComponentScan(basePackages="com.wbd.eshop.inventory.listener") //扫描监听器
 public class Application {
 
 	// 读取数据源配置文件， 获取dataSource,
@@ -70,6 +68,10 @@ public class Application {
 
 	}
 
+	/**
+	 * redis-cluster方式
+	 * @return
+	 */
 	@Bean
 	public JedisCluster jedisClusterFactory() {
 		Set<HostAndPort> set = new HashSet<HostAndPort>();
@@ -83,18 +85,22 @@ public class Application {
 		return jedisCluster;
 	}
 
-	// 注册监听器，初始化工作线程和内存队列
+	// 注册监听器，初始化工作线程和内存队列 采用注解的形式
 
-	@Bean
-	public ServletListenerRegistrationBean servletListenerRegistrationBean() {
-
-		ServletListenerRegistrationBean sb = new ServletListenerRegistrationBean();
-
-		sb.setListener(new InitThreadAndListBlockingQueueListener());
-		
-		return sb;
-
-	}
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@Bean
+//	public ServletListenerRegistrationBean servletListenerRegistrationBean() {
+//
+//		ServletListenerRegistrationBean sb = new ServletListenerRegistrationBean();
+//
+//		sb.setListener(new InitThreadAndListBlockingQueueListener());
+//		sb.setListener(new InitListener());
+//		
+//		return sb;
+//
+//	}
+//	
+	
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

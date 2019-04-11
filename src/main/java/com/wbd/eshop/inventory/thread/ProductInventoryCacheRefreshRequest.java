@@ -38,7 +38,7 @@ public class ProductInventoryCacheRefreshRequest implements Request {
 
 	@Override
 	public Integer getProductId() {
-		return null;
+		return productId;
 	}
 
 	@Override

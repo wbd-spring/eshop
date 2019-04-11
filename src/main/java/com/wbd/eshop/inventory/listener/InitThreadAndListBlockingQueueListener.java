@@ -2,6 +2,7 @@ package com.wbd.eshop.inventory.listener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 import com.wbd.eshop.inventory.thread.RequestProcessorThreadPool;
 
@@ -11,6 +12,7 @@ import com.wbd.eshop.inventory.thread.RequestProcessorThreadPool;
  * @author jwh
  *
  */
+@WebListener //表示为监听器
 public class InitThreadAndListBlockingQueueListener implements ServletContextListener{
 
 	//初始化方法
